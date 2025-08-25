@@ -1,0 +1,12 @@
+{
+  "items": [
+    { "label": "Z-Lib | E-books", "url": "https://singlelogin.se/" },
+    { "label": "RiveManga | Manga", "url": "https://rivemanga.com/" },
+    { "label": "Libgen | E-books", "url": "https://libgen.is/" },
+    { "label": "Anna's Archive | E-books & Research papers", "url": "https://annas-archive.org/" },
+    { "label": "Liber3 | E-books", "url": "https://liber3.org/" },
+    { "label": "Audiobookbay | Audiobooks", "url": "https://audiobookbay.li/" },
+    { "label": "Full Length Audiobooks | No Account Required", "url": "https://www.youtube.com/@fulllengthaudiobooks" },
+    { "label": "Tokybook | Audiobooks — Smaller Catalog", "url": "https://tokybook.com/" }
+  ]
+}

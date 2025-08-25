@@ -1,0 +1,9 @@
+{
+  "items": [
+    { "label": "NordVPN", "url": "https://nordvpn.com/" },
+    { "label": "ExpressVPN", "url": "https://www.expressvpn.com/" },
+    { "label": "CyberGhost", "url": "https://www.cyberghostvpn.com/" },
+    { "label": "Private Internet Access", "url": "https://www.privateinternetaccess.com/" },
+    { "label": "Surfshark", "url": "https://surfshark.com/" }
+  ]
+}

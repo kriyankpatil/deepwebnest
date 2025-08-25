@@ -1,0 +1,7 @@
+{
+  "items": [
+    { "label": "AdGuard | AdBlocker", "url": "https://adguard.com/" },
+    { "label": "Adblock Plus | AdBlocker", "url": "https://adblockplus.org/" },
+    { "label": "UBlockOrigin | Content Blocker — Ads & more", "url": "https://ublockorigin.com/" }
+  ]
+}

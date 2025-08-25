@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deep Web Nest — Games</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script defer src="./scripts.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <h1 class="brand-title">Deep Web Nest</h1>
+      </div>
+      
+    </div>
+  </header>
+  <main class="site-main">
+    <section class="container">
+      <a class="back-btn" href="index.html" aria-label="Back to home">←</a>
+      <h2 class="page-title">🎮 Games</h2>
+      <div id="list-primary"></div>
+      <h3 class="section-heading">Emulator Roms</h3>
+      <div id="list-roms"></div>
+      <h3 class="section-heading">Trainers</h3>
+      <div id="list-trainers"></div>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container"><p>© <span id="year"></span> Deep Web Nest — Unofficial clone</p></div></footer>
+  <script>
+    window.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('year').textContent = new Date().getFullYear();
+      // Render primary, then append any custom items into the same panel
+      loadAndRender('./data/games-primary.json', 'list-primary').then(function(){
+        renderCustomList('list-primary', getCustomItems('custom-games'), 'custom-games');
+        // fetch from backend and append
+        const base = (window.API_BASE || 'http://localhost:8080');
+        fetch(base + '/api/links?category=games')
+          .then(r=>r.json()).then(d=>{
+            const items = (d && d.items) ? d.items.map(i=>({ id:i.id, label:i.label, url:i.url, owner:i.owner })) : [];
+            if (items.length) renderCustomList('list-primary', items, 'custom-games');
+          }).catch(()=>{});
+      });
+      loadAndRender('./data/games-roms.json', 'list-roms');
+      loadAndRender('./data/games-trainers.json', 'list-trainers');
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deep Web Nest — Your gateway to entertainment and tools</title>
+  <meta name="description" content="Deep Web Nest — Your gateway to entertainment and tools: Games, Movies/Shows, Streaming, Software, Books, Music, Anime, VPN, AdBlockers" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script defer src="./scripts.js"></script>
+  <!-- Inline Supabase client and helpers (no external js file) -->
+  <script>
+    // API base (adjust if deploying server elsewhere)
+    window.API_BASE = 'http://localhost:8080';
+    console.log('API_BASE:', window.API_BASE);
+  </script>
+</head>
+<body class="home">
+  <header class="site-header">
+    <div class="container">
+      <div class="brand">
+        <img class="brand-logo" src="./assets/logo.png" alt="Deep Web Nest" />
+      </div>
+      <p class="brand-tagline">Your gateway to entertainment and tools</p>
+    </div>
+  </header>
+
+  <main class="site-main">
+    <button class="login-btn" id="auth-btn" aria-label="Login">Login</button>
+    <button class="fab" id="open-add-modal" aria-label="Add link" title="Add link">＋</button>
+    <section class="category-grid container" aria-label="Categories">
+      <a class="card card-linkpanel" href="games.html" aria-label="Explore Games">
+        <div class="card-emoji" aria-hidden="true">🎮</div>
+        <h2 class="card-title">Games</h2>
+        <p class="card-desc">Discover amazing games and gaming resources</p>
+      </a>
+
+      <a class="card card-linkpanel" href="movies.html" aria-label="Explore Movies and Shows">
+        <div class="card-emoji" aria-hidden="true">🎬</div>
+        <h2 class="card-title">Movies/Shows</h2>
+        <p class="card-desc">Stream your favorite movies and TV shows</p>
+      </a>
+
+      <a class="card card-linkpanel" href="streaming.html" aria-label="Explore Streaming">
+        <div class="card-emoji" aria-hidden="true">📺</div>
+        <h2 class="card-title">Streaming</h2>
+        <p class="card-desc">Live Sports & TV</p>
+      </a>
+
+      <a class="card card-linkpanel" href="software.html" aria-label="Explore Software">
+        <div class="card-emoji" aria-hidden="true">💻</div>
+        <h2 class="card-title">Software</h2>
+        <p class="card-desc">Essential software and development tools</p>
+      </a>
+
+      <a class="card card-linkpanel" href="books.html" aria-label="Explore Books">
+        <div class="card-emoji" aria-hidden="true">📚</div>
+        <h2 class="card-title">Books</h2>
+        <p class="card-desc">Digital libraries and reading resources</p>
+      </a>
+
+      <a class="card card-linkpanel" href="music.html" aria-label="Explore Music">
+        <div class="card-emoji" aria-hidden="true">🎵</div>
+        <h2 class="card-title">Music</h2>
+        <p class="card-desc">Music streaming and audio platforms</p>
+      </a>
+
+      <a class="card card-linkpanel" href="anime.html" aria-label="Explore Anime">
+        <div class="card-emoji" aria-hidden="true">🌸</div>
+        <h2 class="card-title">Anime</h2>
+        <p class="card-desc">Anime streaming and manga resources</p>
+      </a>
+
+      <a class="card card-linkpanel" href="vpn.html" aria-label="Explore VPNs">
+        <div class="card-emoji" aria-hidden="true">🔒</div>
+        <h2 class="card-title">VPN</h2>
+        <p class="card-desc">Virtual private networks and security tools</p>
+      </a>
+
+      <a class="card card-linkpanel" href="adblockers.html" aria-label="Explore AdBlockers">
+        <div class="card-emoji" aria-hidden="true">🛡️</div>
+        <h2 class="card-title">AdBlockers</h2>
+        <p class="card-desc">Ad blocking tools and privacy extensions</p>
+      </a>
+    </section>
+
+    
+  </main>
+
+  <div id="add-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" id="close-add-modal"></div>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="add-modal-title">
+      <h3 id="add-modal-title">Add Link</h3>
+      <form id="addlink-home" class="addlink modal-form">
+        <label>
+          <span>Category</span>
+          <select id="home-category" required>
+            <option value="games">Games</option>
+            <option value="movies">Movies/Shows</option>
+            <option value="streaming">Streaming</option>
+            <option value="software">Software</option>
+            <option value="books">Books</option>
+            <option value="music">Music</option>
+            <option value="anime">Anime</option>
+            <option value="vpn">VPN</option>
+            <option value="adblockers">AdBlockers</option>
+          </select>
+        </label>
+        <label>
+          <span>Title</span>
+          <input id="home-label" type="text" placeholder="Site name (e.g. Pixlr)" required />
+        </label>
+        <label>
+          <span>URL</span>
+          <input id="home-url" type="text" placeholder="https://example.com" required />
+        </label>
+        <div id="addMessage"></div>
+        <div class="modal-actions">
+          <button type="button" id="cancel-add">Cancel</button>
+          <button type="submit" class="primary">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="login-modal" id="loginModal">
+      <div class="login-content">
+          <button class="close-btn" id="closeLoginModal">&times;</button>
+          
+          <div class="login-header">
+              <h2 class="login-title">Welcome Back</h2>
+              <p class="login-subtitle">Sign in to manage your custom links</p>
+          </div>
+          
+          <form class="login-form" id="loginForm">
+              <div class="form-group">
+                  <label for="username">Email</label>
+                  <input type="email" id="username" name="username" placeholder="Enter your email" required>
+              </div>
+              
+              <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" id="password" name="password" placeholder="Enter your password" required>
+              </div>
+              
+              <div class="login-actions">
+                  <button type="submit" class="login-btn-primary">Sign In</button>
+                  <button type="button" class="login-btn-secondary" id="cancelLogin">Cancel</button>
+              </div>
+              
+              <div id="loginMessage"></div>
+          </form>
+      </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Deep Web Nest — Unofficial clone</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const openBtn = document.getElementById('open-add-modal');
+    const modal = document.getElementById('add-modal');
+    const closeBackdrop = document.getElementById('close-add-modal');
+    const cancelBtn = document.getElementById('cancel-add');
+    function openModal(){ modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.setAttribute('aria-hidden','true'); }
+    openBtn && openBtn.addEventListener('click', function(){
+      const hasToken = !!localStorage.getItem('authToken');
+      if (hasToken) { openModal(); }
+      else { openLogin(); }
+    });
+    closeBackdrop && closeBackdrop.addEventListener('click', closeModal);
+    cancelBtn && cancelBtn.addEventListener('click', closeModal);
+
+    document.getElementById('addlink-home').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const addMsg = document.getElementById('addMessage');
+      const user = localStorage.getItem('currentUser');
+      const token = localStorage.getItem('authToken');
+      if (!user || !token) {
+        addMsg.className = 'error-message';
+        addMsg.textContent = 'Please login to add links.';
+        openLogin();
+        return;
+      }
+      const cat = document.getElementById('home-category').value;
+      let label = document.getElementById('home-label').value.trim();
+      let url = document.getElementById('home-url').value.trim();
+
+      // Basic validation
+      if (!label || label.length < 2) {
+        addMsg.className = 'error-message';
+        addMsg.textContent = 'Please enter a valid title.';
+        return;
+      }
+      if (url && !/^https?:\/\//i.test(url)) { url = 'https://' + url; }
+      try {
+        const u = new URL(url);
+        url = u.href;
+      } catch(_e) {
+        addMsg.className = 'error-message';
+        addMsg.textContent = 'Please enter a valid URL.';
+        return;
+      }
+
+      // Save via API
+      try {
+        const token = localStorage.getItem('authToken');
+        const resp2 = await fetch((window.API_BASE || '') + '/api/links', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': 'Bearer ' + token } : {})
+          },
+          body: JSON.stringify({ category: cat, label, url })
+        });
+        const data2 = await resp2.json();
+        if (!resp2.ok || !data2.ok) throw new Error(data2.error || 'Insert failed');
+      } catch (e) {
+        addMsg.className = 'error-message';
+        addMsg.textContent = e.message || 'Failed to save link';
+        return;
+      }
+
+      addMsg.className = 'success-message';
+      addMsg.textContent = 'Added to ' + cat + ' successfully!';
+      this.reset();
+      setTimeout(() => {
+        addMsg.textContent = '';
+        addMsg.className = '';
+        closeModal();
+      }, 900);
+    });
+
+    // Simple login modal
+    const loginModal = document.getElementById('loginModal');
+    const closeLoginBtn = document.getElementById('closeLoginModal');
+    const cancelLoginBtn = document.getElementById('cancelLogin');
+    
+    function openLogin() { 
+        loginModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLogin() { 
+        loginModal.classList.remove('show');
+        document.body.style.overflow = 'auto';
+        // Clear form and messages
+        document.getElementById('loginForm').reset();
+        document.getElementById('loginMessage').textContent = '';
+    }
+    
+    // Close modal when clicking outside or on close button
+    closeLoginBtn.addEventListener('click', closeLogin);
+    cancelLoginBtn.addEventListener('click', closeLogin);
+    
+    loginModal.addEventListener('click', function(e) {
+        if (e.target === loginModal) {
+            closeLogin();
+        }
+    });
+    
+    // Close modal on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && loginModal.classList.contains('show')) {
+            closeLogin();
+        }
+    });
+    // Google Identity callback
+    // Simple username/password auth stored in localStorage (demo only)
+    async function sha256(text){
+      if (window.crypto && crypto.subtle) {
+        const enc = new TextEncoder().encode(text);
+        const buf = await crypto.subtle.digest('SHA-256', enc);
+        return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+      }
+      return text; // fallback (not secure)
+    }
+    function getUsers(){
+      try { return JSON.parse(localStorage.getItem('users')||'{}'); } catch { return {}; }
+    }
+    function setUsers(u){ localStorage.setItem('users', JSON.stringify(u)); }
+
+    // Wire Login button
+    const authBtn = document.getElementById('auth-btn');
+    function updateAuthButton(){
+      const user = localStorage.getItem('currentUser');
+      if (user) {
+        authBtn.textContent = 'Logout (' + user + ')';
+      } else {
+        authBtn.textContent = 'Login';
+      }
+    }
+    authBtn && authBtn.addEventListener('click', async function(){
+      const user = localStorage.getItem('currentUser');
+      if (user) {
+        try { /* no-op signOut for table mode */ } catch {}
+        localStorage.removeItem('currentUser');
+        localStorage.removeItem('authToken');
+        openBtn && (openBtn.title = 'Login to add');
+        updateAuthButton();
+        alert('Logged out');
+      } else {
+        openLogin();
+      }
+    });
+
+    // Initialize auth state from Supabase session on load
+    (async function(){
+      if (window.sb && window.sb.auth && typeof window.sb.auth.getSession === 'function') {
+        await refreshAuthState();
+      } else {
+        updateAuthButton();
+      }
+    })();
+
+    // Enable FAB if already logged in
+    if (localStorage.getItem('currentUser')) {
+      openBtn && (openBtn.title = 'Add link');
+    }
+    updateAuthButton();
+
+    // Handle login using Node API (table-based auth)
+    const loginForm = document.getElementById('loginForm');
+    const loginMessage = document.getElementById('loginMessage');
+    
+    loginForm && loginForm.addEventListener('submit', async function(e){
+      e.preventDefault();
+      loginMessage.textContent = '';
+      loginMessage.className = '';
+      
+      const email = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      if (!email || !password) {
+        showMessage('Email and password are required.', 'error');
+        return;
+      }
+      try {
+        const resp = await fetch((window.API_BASE || '') + '/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await resp.json();
+        if (!resp.ok || !data.ok) throw new Error(data.error || 'Login failed');
+        localStorage.setItem('currentUser', data.user.email);
+        localStorage.setItem('authToken', data.token);
+        openBtn && (openBtn.title = 'Add link');
+        updateAuthButton();
+        showMessage(data.created ? 'Account created. Signed in.' : 'Login successful!', 'success');
+        setTimeout(() => { closeLogin(); }, 900);
+      } catch (err) {
+        showMessage((err && err.message) || 'Login failed', 'error');
+      }
+    });
+
+    async function refreshAuthState(){ updateAuthButton(); }
+
+    // Export / Import
+    // import/export removed per request
+
+    // One-time cleanup: remove test items beyond 9 in games and movies
+    (function(){
+      const MIGRATION_FLAG = 'cleanup_trim_custom_v1';
+      if (localStorage.getItem(MIGRATION_FLAG)) return;
+      try {
+        function trimCustom(key, max){
+          const raw = localStorage.getItem(key);
+          if (!raw) return;
+          const arr = JSON.parse(raw);
+          if (!Array.isArray(arr)) return;
+          if (arr.length > max) {
+            const trimmed = arr.slice(0, max);
+            localStorage.setItem(key, JSON.stringify(trimmed));
+          }
+        }
+        trimCustom('custom-games', 9);
+        trimCustom('custom-movies', 9);
+        localStorage.setItem(MIGRATION_FLAG, '1');
+      } catch {}
+    })();
+  </script>
+</body>
+</html>
+
+

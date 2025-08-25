@@ -1,0 +1,13 @@
+{
+  "items": [
+    { "label": "Racoon | Multi Media Downloader", "url": "https://raccoon.icu/" },
+    { "label": "AZMP3 | Youtube to MP3", "url": "https://azmp3.to/" },
+    { "label": "Ezmp3 | Youtube to MP3", "url": "https://ezmp3.cc/" },
+    { "label": "Cobalt | YT, IG, Twitch etc... Downloader", "url": "https://cobalt.tools/" },
+    { "label": "DoubleDouble | Download HiFi Music", "url": "https://doubledouble.to/" },
+    { "label": "NCS | Non-Copyrighted Music", "url": "https://ncs.io/" },
+    { "label": "Music School | Bandcamp to MP3", "url": "https://musicschool.to/" },
+    { "label": "CnvMP3 | Media Downloader", "url": "https://cnvmp3.com/" },
+    { "label": "Megathread | Everything Music Related", "url": "https://rentry.co/music-megathread" }
+  ]
+}

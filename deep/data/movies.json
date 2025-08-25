@@ -1,0 +1,13 @@
+{
+  "items": [
+    { "label": "Flixer | Most Popular — NO ADS", "url": "https://flixer.to/" },
+    { "label": "Cineby | Netflix UI", "url": "https://cineby.app/" },
+    { "label": "BitCine | Netflix UI", "url": "https://bitcine.to/" },
+    { "label": "XPrime Tv | Netflix UI", "url": "https://xprime.tv/" },
+    { "label": "Fmovies | Movies & TV", "url": "https://fmoviesz.to/" },
+    { "label": "MKV Cinemas | Bollywood & Hollywood", "url": "https://mkvcinemas.cat/" },
+    { "label": "1337x | Torrents", "url": "https://1337x.to/" },
+    { "label": "Docplus | Documentaries", "url": "https://docplus.tv/" },
+    { "label": "Documentary Area | Documentaries", "url": "https://documentaryarea.com/" }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "items": [
+    { "label": "StreamEast | All Mirrors", "url": "https://streameast.to/" },
+    { "label": "Sportsurge | Live Sports", "url": "https://v2.sportsurge.net/" },
+    { "label": "WatchSports | 10 Sports", "url": "https://watchsportsonline.cc/" },
+    { "label": "Streamed | Live Sports", "url": "https://streamed.su/" },
+    { "label": "TVPass | USA", "url": "https://tvpass.co/" },
+    { "label": "RiveLive", "url": "https://rivelive.tv/" },
+    { "label": "LiveHDTV", "url": "https://livehdtv.org/" },
+    { "label": "EasyWebTV | All Countries", "url": "https://easywebtv.net/" },
+    { "label": "RGShows | International Live TV", "url": "https://rgshows.me/" }
+  ]
+}
