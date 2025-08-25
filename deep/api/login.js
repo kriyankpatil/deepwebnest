@@ -47,6 +47,31 @@ export default async function handler(req, res) {
     const token = signToken({ email });
     return res.status(200).json({ ok: true, user: { id: rows[0].id, email }, token });
   } catch (e) {
+    // If table doesn't exist, create it and retry
+    if (e.message.includes('relation "app_users" does not exist')) {
+      try {
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS public.app_users (
+            id SERIAL PRIMARY KEY,
+            email VARCHAR(255) UNIQUE NOT NULL,
+            password_hash VARCHAR(255) NOT NULL,
+            display_name VARCHAR(255),
+            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+          )
+        `);
+        // Retry the operation
+        const { email, password, displayName } = req.body || {};
+        const passHash = sha256(password);
+        const ins = await pool.query(
+          'insert into public.app_users (email, password_hash, display_name) values ($1,$2,$3) returning id, email',
+          [email, passHash, displayName || null]
+        );
+        const token = signToken({ email: ins.rows[0].email });
+        return res.status(200).json({ ok: true, user: ins.rows[0], token, created: true });
+      } catch (createError) {
+        return res.status(500).json({ error: 'Failed to create table: ' + createError.message });
+      }
+    }
     return res.status(500).json({ error: e.message || 'server error' });
   }
 }

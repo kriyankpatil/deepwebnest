@@ -33,6 +33,10 @@ export default async function handler(req, res) {
       );
       return res.status(200).json({ ok: true, items: rows });
     } catch (e) {
+      // If table doesn't exist, return empty array
+      if (e.message.includes('relation "custom_links" does not exist')) {
+        return res.status(200).json({ ok: true, items: [] });
+      }
       return res.status(500).json({ error: e.message || 'server error' });
     }
   }
@@ -50,6 +54,32 @@ export default async function handler(req, res) {
       );
       return res.status(200).json({ ok: true, link: rows[0] });
     } catch (e) {
+      // If table doesn't exist, create it and retry
+      if (e.message.includes('relation "custom_links" does not exist')) {
+        try {
+          await pool.query(`
+            CREATE TABLE IF NOT EXISTS public.custom_links (
+              id SERIAL PRIMARY KEY,
+              category VARCHAR(100) NOT NULL,
+              label VARCHAR(255) NOT NULL,
+              url TEXT NOT NULL,
+              owner VARCHAR(255) NOT NULL,
+              created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+            )
+          `);
+          // Retry the operation
+          const user = verifyToken(req);
+          const { category, label, url } = req.body || {};
+          const owner = user.email || null;
+          const { rows } = await pool.query(
+            'insert into public.custom_links (category, label, url, owner) values ($1,$2,$3,$4) returning id, category, label, url, owner, created_at',
+            [category, label, url, owner]
+          );
+          return res.status(200).json({ ok: true, link: rows[0] });
+        } catch (createError) {
+          return res.status(500).json({ error: 'Failed to create table: ' + createError.message });
+        }
+      }
       return res.status(500).json({ error: e.message || 'server error' });
     }
   }
