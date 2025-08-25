@@ -28,7 +28,7 @@
       document.getElementById('year').textContent = new Date().getFullYear();
       loadAndRender('./data/vpn.json', 'list-primary').then(function(){
         renderCustomList('list-primary', getCustomItems('custom-vpn'), 'custom-vpn');
-        const base = (window.API_BASE || 'http://localhost:8080');
+        const base = (window.API_BASE || window.location.origin);
         fetch(base + '/api/links?category=vpn')
           .then(r=>r.json()).then(d=>{
             const items = (d && d.items) ? d.items.map(i=>({ id:i.id, label:i.label, url:i.url, owner:i.owner })) : [];

@@ -13,8 +13,8 @@
   <!-- Inline Supabase client and helpers (no external js file) -->
   <script>
     // API base (adjust if deploying server elsewhere)
-    window.API_BASE = 'http://localhost:8080';
-    console.log('API_BASE:', window.API_BASE);
+    window.API_BASE = window.location.origin;
+console.log('API_BASE:', window.API_BASE);
   </script>
 </head>
 <body class="home">
